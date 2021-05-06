@@ -1,20 +1,15 @@
 {
   "canisters": {
-    "auth_demo": {
-      "main": "src/auth_demo/main.mo",
+    "whoami": {
+      "main": "src/whoami/main.mo",
       "type": "motoko"
     },
-    "auth_demo_assets": {
-      "dependencies": [
-        "auth_demo"
-      ],
+    "www": {
+      "dependencies": ["whoami"],
       "frontend": {
-        "entrypoint": "src/auth_demo_assets/src/index.html"
+        "entrypoint": "src/frontend/src/index.html"
       },
-      "source": [
-        "src/auth_demo_assets/assets",
-        "dist/auth_demo_assets/"
-      ],
+      "source": ["src/frontend/assets", "dist/"],
       "type": "assets"
     }
   },
