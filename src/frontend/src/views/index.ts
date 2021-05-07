@@ -8,5 +8,4 @@ const content = html`<div class="container">
 
 export const renderIndex = async () => {
   render(content, document.getElementById("pageContent") as HTMLElement);
-  setImmediate(() => {});
 };
