@@ -28,6 +28,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@dfinity/auth-client": "^0.8.8",
     "lit-html": "^1.4.1",
     "module-alias": "^2.2.2"
   },
