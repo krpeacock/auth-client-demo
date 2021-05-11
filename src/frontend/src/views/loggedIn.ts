@@ -25,19 +25,21 @@ export const renderLoggedIn = (
 ) => {
   render(content(), document.getElementById("pageContent") as HTMLElement);
 
-  (document.getElementById(
-    "whoamiButton"
-  ) as HTMLButtonElement).onclick = async () => {
-    const response = await actor.whoami();
-    (document.getElementById(
-      "whoami"
-    ) as HTMLElement).innerText = response.toString();
-  };
+  (document.getElementById("whoamiButton") as HTMLButtonElement).onclick =
+    async () => {
+      try {
+        const response = await actor.whoami();
+        console.log(response);
+        (document.getElementById("whoami") as HTMLInputElement).value =
+          response.toString();
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  (document.getElementById(
-    "logout"
-  ) as HTMLButtonElement).onclick = async () => {
-    await authClient.logout();
-    renderIndex();
-  };
+  (document.getElementById("logout") as HTMLButtonElement).onclick =
+    async () => {
+      await authClient.logout();
+      renderIndex();
+    };
 };

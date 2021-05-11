@@ -28,6 +28,7 @@ async function handleAuthenticated(authClient: AuthClient) {
   const identity = await authClient.getIdentity();
 
   const agent = new HttpAgent({ identity });
+  console.log(process.env.CANISTER_ID);
   const whoami_actor = Actor.createActor<_SERVICE>(idlFactory, {
     agent,
     canisterId: process.env.CANISTER_ID as string,
