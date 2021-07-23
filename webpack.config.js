@@ -108,6 +108,7 @@ module.exports = {
       NODE_ENV: "development",
       WHOAMI_CANISTER_ID: canisters["whoami"],
       LOCAL_II_CANISTER,
+      DFX_NETWORK: process.env.DFX_NETWORK
     }),
     new webpack.ProvidePlugin({
       Buffer: [require.resolve("buffer/"), "Buffer"],

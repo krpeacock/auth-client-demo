@@ -4,20 +4,25 @@
       "main": "src/whoami/main.mo",
       "type": "motoko"
     },
-    "www": {
+    "auth_client_demo_assets": {
       "dependencies": ["whoami"],
       "frontend": {
-        "entrypoint": "src/frontend/src/index.html"
+        "entrypoint": "src/auth_client_demo_assets/src/index.html"
       },
-      "source": ["src/frontend/assets", "dist/"],
+      "source": [
+        "src/auth_client_demo_assets/assets",
+        "dist/auth_client_demo_assets/"
+      ],
       "type": "assets"
     }
   },
   "defaults": {
     "build": {
+      "args": "",
       "packtool": ""
     }
   },
+  "dfx": "0.8.0",
   "networks": {
     "local": {
       "bind": "127.0.0.1:8000",
