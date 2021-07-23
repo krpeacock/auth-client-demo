@@ -1,9 +1,7 @@
-import { Actor, HttpAgent } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
-import idlFactory from "./did";
-import type { _SERVICE } from "./did";
 import { renderIndex } from "./views";
 import { renderLoggedIn } from "./views/loggedIn";
+import { canisterId, createActor } from "../../declarations/whoami";
 
 const init = async () => {
   const authClient = await AuthClient.create();
@@ -20,19 +18,22 @@ const init = async () => {
       onSuccess: async () => {
         handleAuthenticated(authClient);
       },
+      identityProvider:
+        process.env.DFX_NETWORK === "ic"
+          ? "https://identity.ic0.app/#authorize"
+          : process.env.LOCAL_II_CANISTER,
     });
   };
 };
 
 async function handleAuthenticated(authClient: AuthClient) {
   const identity = await authClient.getIdentity();
-
-  const agent = new HttpAgent({ identity });
-  console.log(process.env.CANISTER_ID);
-  const whoami_actor = Actor.createActor<_SERVICE>(idlFactory, {
-    agent,
-    canisterId: process.env.CANISTER_ID as string,
+  const whoami_actor = createActor(canisterId as string, {
+    agentOptions: {
+      identity,
+    },
   });
+
   renderLoggedIn(whoami_actor, authClient);
 }
 

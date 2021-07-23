@@ -2,7 +2,7 @@ import { ActorSubclass } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
 import { html, render } from "lit-html";
 import { renderIndex } from ".";
-import { _SERVICE } from "../did";
+import { _SERVICE } from "../../../declarations/whoami/whoami.did";
 
 const content = () => html`<div class="container">
   <style>
