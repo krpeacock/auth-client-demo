@@ -2,7 +2,7 @@
 
 This is an example project, intended to demonstrate how an app developer might integrate with an [Internet Identity](https://identity.ic0.app).
 
-[Live demo](https://hpgtk-2qaaa-aaaab-qaapq-cai.raw.ic0.app/)
+[Live demo](https://vasb2-4yaaa-aaaab-qadoa-cai.ic0.app/)
 
 This is an example showing how to use [@dfinity/auth-client](https://www.npmjs.com/package/@dfinity/auth-client).
 
@@ -15,10 +15,25 @@ To learn more before you start working with auth_demo, see the following documen
 - [Motoko Programming Language Guide](https://sdk.dfinity.org/docs/language-guide/motoko.html)
 - [Motoko Language Quick Reference](https://sdk.dfinity.org/docs/language-guide/language-manual.html)
 
-If you want to start working on your project right away, you might want to try the following commands:
+## Setting up for local development
+
+To get started, start a local dfx development environment in this directory with the following steps:
 
 ```bash
-cd auth_demo/
-dfx help
-dfx config --help
+cd auth-client-demo/
+dfx start --background
+dfx deploy
 ```
+
+Then, make sure you have the [Internet Identity](https://github.com/dfinity/internet-identity) repo cloned locally. 
+
+```bash
+cd ../internet-identity
+II_ENV=development dfx deploy --no-wallet --argument '(null)'
+```
+
+Copy the canister ID fom the Internet Identity canister, and paste it into `webpack.config.js` in this project on the `LOCAL_II_CANISTER` variable on line `8`.
+
+Finally, cd back into the auth-client-demo directory and start the development server with `npm start`.
+
+You can now access the app at `http://localhost:8080`.
