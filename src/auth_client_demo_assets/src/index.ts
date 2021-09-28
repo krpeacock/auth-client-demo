@@ -13,6 +13,11 @@ const init = async () => {
   const loginButton = document.getElementById(
     "loginButton"
   ) as HTMLButtonElement;
+
+  const days = BigInt(1);
+  const hours = BigInt(24);
+  const nanoseconds = BigInt(3600000000000);
+
   loginButton.onclick = async () => {
     await authClient.login({
       onSuccess: async () => {
@@ -22,6 +27,8 @@ const init = async () => {
         process.env.DFX_NETWORK === "ic"
           ? "https://identity.ic0.app/#authorize"
           : process.env.LOCAL_II_CANISTER,
+      // Maximum authorization expiration is 8 days
+      maxTimeToLive: days * hours * nanoseconds,
     });
   };
 };
