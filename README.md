@@ -2,6 +2,8 @@
 
 This is an example project, intended to demonstrate how an app developer might integrate with an [Internet Identity](https://identity.ic0.app).
 
+For a non-typescript implementation, see https://github.com/krpeacock/auth-client-demo/tree/vanilla-js
+
 [Live demo](https://vasb2-4yaaa-aaaab-qadoa-cai.ic0.app/)
 
 This is an example showing how to use [@dfinity/auth-client](https://www.npmjs.com/package/@dfinity/auth-client).
