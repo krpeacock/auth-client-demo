@@ -10,9 +10,7 @@ const init = async () => {
   }
   renderIndex();
 
-  const loginButton = document.getElementById(
-    "loginButton"
-  ) as HTMLButtonElement;
+  const loginButton = document.getElementById("loginButton");
 
   const days = BigInt(1);
   const hours = BigInt(24);
@@ -33,9 +31,9 @@ const init = async () => {
   };
 };
 
-async function handleAuthenticated(authClient: AuthClient) {
+async function handleAuthenticated(authClient) {
   const identity = await authClient.getIdentity();
-  const whoami_actor = createActor(canisterId as string, {
+  const whoami_actor = createActor(canisterId, {
     agentOptions: {
       identity,
     },

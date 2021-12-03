@@ -7,5 +7,5 @@ const content = html`<div class="container">
 </div>`;
 
 export const renderIndex = async () => {
-  render(content, document.getElementById("pageContent") as HTMLElement);
+  render(content, document.getElementById("pageContent"));
 };

@@ -19,27 +19,21 @@ const content = () => html`<div class="container">
   <button id="logout">log out</button>
 </div>`;
 
-export const renderLoggedIn = (
-  actor: ActorSubclass<_SERVICE>,
-  authClient: AuthClient
-) => {
-  render(content(), document.getElementById("pageContent") as HTMLElement);
+export const renderLoggedIn = (actor, authClient) => {
+  render(content(), document.getElementById("pageContent"));
 
-  (document.getElementById("whoamiButton") as HTMLButtonElement).onclick =
-    async () => {
-      try {
-        const response = await actor.whoami();
-        console.log(response);
-        (document.getElementById("whoami") as HTMLInputElement).value =
-          response.toString();
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  document.getElementById("whoamiButton").onclick = async () => {
+    try {
+      const response = await actor.whoami();
+      console.log(response);
+      document.getElementById("whoami").value = response.toString();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  (document.getElementById("logout") as HTMLButtonElement).onclick =
-    async () => {
-      await authClient.logout();
-      renderIndex();
-    };
+  document.getElementById("logout").onclick = async () => {
+    await authClient.logout();
+    renderIndex();
+  };
 };

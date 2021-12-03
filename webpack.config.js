@@ -6,7 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 // Replace this value with the ID of your local Internet Identity canister
 const LOCAL_II_CANISTER =
-  "http://rrkah-fqaaa-aaaaa-aaaaq-cai.localhost:8000/#authorize";
+  "http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize";
 
 let localCanisters, prodCanisters, canisters;
 
@@ -53,7 +53,7 @@ module.exports = {
   entry: {
     // The frontend.entrypoint points to the HTML file for this build, so we need
     // to replace the extension to `.js`.
-    index: path.join(__dirname, asset_entry).replace(/\.html$/, ".ts"),
+    index: path.join(__dirname, asset_entry).replace(/\.html$/, ".js"),
   },
   devtool: isDevelopment ? "source-map" : false,
   optimization: {
@@ -108,7 +108,7 @@ module.exports = {
       NODE_ENV: isDevelopment ? "development" : "production",
       WHOAMI_CANISTER_ID: canisters["whoami"],
       LOCAL_II_CANISTER,
-      DFX_NETWORK: process.env.DFX_NETWORK || "local"
+      DFX_NETWORK: process.env.DFX_NETWORK || "local",
     }),
     new webpack.ProvidePlugin({
       Buffer: [require.resolve("buffer/"), "Buffer"],
