@@ -31,6 +31,7 @@ Then, make sure you have the [Internet Identity](https://github.com/dfinity/inte
 
 ```bash
 cd ../internet-identity
+rm -rf .dfx/local
 II_ENV=development dfx deploy --no-wallet --argument '(null)'
 ```
 
