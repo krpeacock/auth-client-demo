@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
+const DFX_NETWORK = process.env.DFX_NETWORK;
+("http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize");
 // Replace this value with the ID of your local Internet Identity canister
 const LOCAL_II_CANISTER =
   "http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize";
@@ -101,6 +103,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
       LOCAL_II_CANISTER,
+      DFX_NETWORK,
       ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({
