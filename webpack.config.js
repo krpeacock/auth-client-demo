@@ -6,11 +6,10 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 // Replace this value with the ID of your local Internet Identity canister
 const LOCAL_II_CANISTER =
-  "http://rrkah-fqaaa-aaaaa-aaaaq-cai.localhost:8000/#authorize";
+  "http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize";
 
-let localCanisters, prodCanisters, canisters;
-
-function initCanisterIds() {
+function initCanisterEnv() {
+  let localCanisters, prodCanisters;
   try {
     localCanisters = require(path.resolve(
       ".dfx",
@@ -30,22 +29,22 @@ function initCanisterIds() {
     process.env.DFX_NETWORK ||
     (process.env.NODE_ENV === "production" ? "ic" : "local");
 
-  canisters = network === "local" ? localCanisters : prodCanisters;
+  const canisterConfig = network === "local" ? localCanisters : prodCanisters;
 
-  for (const canister in canisters) {
-    process.env[canister.toUpperCase() + "_CANISTER_ID"] =
-      canisters[canister][network];
-  }
+  return Object.entries(canisterConfig).reduce((prev, current) => {
+    const [canisterName, canisterDetails] = current;
+    prev[canisterName.toUpperCase() + "_CANISTER_ID"] =
+      canisterDetails[network];
+    return prev;
+  }, {});
 }
-initCanisterIds();
+const canisterEnvVariables = initCanisterEnv();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
-const asset_entry = path.join(
-  "src",
-  "auth_client_demo_assets",
-  "src",
-  "index.html"
-);
+
+const frontendDirectory = "auth_client_demo_assets";
+
+const asset_entry = path.join("src", frontendDirectory, "src", "index.html");
 
 module.exports = {
   target: "web",
@@ -72,7 +71,7 @@ module.exports = {
   },
   output: {
     filename: "index.js",
-    path: path.join(__dirname, "dist", "auth_client_demo_assets"),
+    path: path.join(__dirname, "dist", frontendDirectory),
   },
 
   // Depending in the language or framework you are using for
@@ -83,7 +82,7 @@ module.exports = {
   module: {
     rules: [
       { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-      //  { test: /\.css$/, use: ['style-loader','css-loader'] }
+      //    { test: /\.css$/, use: ['style-loader','css-loader'] }
     ],
   },
   plugins: [
@@ -94,21 +93,15 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.join(
-            __dirname,
-            "src",
-            "auth_client_demo_assets",
-            "assets"
-          ),
-          to: path.join(__dirname, "dist", "auth_client_demo_assets"),
+          from: path.join(__dirname, "src", frontendDirectory, "assets"),
+          to: path.join(__dirname, "dist", frontendDirectory),
         },
       ],
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: isDevelopment ? "development" : "production",
-      WHOAMI_CANISTER_ID: canisters["whoami"],
+      NODE_ENV: "development",
       LOCAL_II_CANISTER,
-      DFX_NETWORK: process.env.DFX_NETWORK || "local"
+      ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({
       Buffer: [require.resolve("buffer/"), "Buffer"],
@@ -127,7 +120,7 @@ module.exports = {
       },
     },
     hot: true,
-    contentBase: path.resolve(__dirname, "./src/auth_client_demo_assets"),
-    watchContentBase: true,
+    watchFiles: [path.resolve(__dirname, "src", frontendDirectory)],
+    liveReload: true,
   },
 };
