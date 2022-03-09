@@ -4,8 +4,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
-const DFX_NETWORK = process.env.DFX_NETWORK;
-("http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize");
+const network =
+  process.env.DFX_NETWORK ||
+  (process.env.NODE_ENV === "production" ? "ic" : "local");
+
 // Replace this value with the ID of your local Internet Identity canister
 const LOCAL_II_CANISTER =
   "http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize";
@@ -26,10 +28,6 @@ function initCanisterEnv() {
   } catch (error) {
     console.log("No production canister_ids.json found. Continuing with local");
   }
-
-  const network =
-    process.env.DFX_NETWORK ||
-    (process.env.NODE_ENV === "production" ? "ic" : "local");
 
   const canisterConfig = network === "local" ? localCanisters : prodCanisters;
 
@@ -103,7 +101,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
       LOCAL_II_CANISTER,
-      DFX_NETWORK,
+      DFX_NETWORK: network,
       ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({
