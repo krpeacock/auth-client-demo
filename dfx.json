@@ -5,7 +5,9 @@
       "type": "motoko"
     },
     "auth_client_demo_assets": {
-      "dependencies": ["whoami"],
+      "dependencies": [
+        "whoami"
+      ],
       "frontend": {
         "entrypoint": "src/auth_client_demo_assets/src/index.html"
       },
@@ -22,7 +24,6 @@
       "packtool": ""
     }
   },
-  "dfx": "0.9.3",
   "networks": {
     "local": {
       "bind": "127.0.0.1:8000",

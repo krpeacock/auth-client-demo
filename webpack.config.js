@@ -2,15 +2,6 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-
-const network =
-  process.env.DFX_NETWORK ||
-  (process.env.NODE_ENV === "production" ? "ic" : "local");
-
-// Replace this value with the ID of your local Internet Identity canister
-const LOCAL_II_CANISTER =
-  "http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/#authorize";
 
 function initCanisterEnv() {
   let localCanisters, prodCanisters;
@@ -29,6 +20,10 @@ function initCanisterEnv() {
     console.log("No production canister_ids.json found. Continuing with local");
   }
 
+  const network =
+    process.env.DFX_NETWORK ||
+    (process.env.NODE_ENV === "production" ? "ic" : "local");
+
   const canisterConfig = network === "local" ? localCanisters : prodCanisters;
 
   return Object.entries(canisterConfig).reduce((prev, current) => {
@@ -44,7 +39,7 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 
 const frontendDirectory = "auth_client_demo_assets";
 
-const asset_entry = path.join("src", frontendDirectory, "src", "index.html");
+const frontend_entry = path.join("src", frontendDirectory, "src", "index.html");
 
 module.exports = {
   target: "web",
@@ -52,7 +47,7 @@ module.exports = {
   entry: {
     // The frontend.entrypoint points to the HTML file for this build, so we need
     // to replace the extension to `.js`.
-    index: path.join(__dirname, asset_entry).replace(/\.html$/, ".ts"),
+    index: path.join(__dirname, frontend_entry).replace(/\.html$/, ".ts"),
   },
   devtool: isDevelopment ? "source-map" : false,
   optimization: {
@@ -82,26 +77,16 @@ module.exports = {
   module: {
     rules: [
       { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-      //    { test: /\.css$/, use: ['style-loader','css-loader'] }
+      { test: /\.css$/, use: ["style-loader", "css-loader"] },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, asset_entry),
+      template: path.join(__dirname, frontend_entry),
       cache: false,
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.join(__dirname, "src", frontendDirectory, "assets"),
-          to: path.join(__dirname, "dist", frontendDirectory),
-        },
-      ],
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
-      LOCAL_II_CANISTER,
-      DFX_NETWORK: network,
       ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({
@@ -113,13 +98,14 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: "http://127.0.0.1:8000",
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
         },
       },
     },
+    static: path.resolve(__dirname, "src", frontendDirectory, "assets"),
     hot: true,
     watchFiles: [path.resolve(__dirname, "src", frontendDirectory)],
     liveReload: true,
