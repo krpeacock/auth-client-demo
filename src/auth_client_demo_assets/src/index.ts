@@ -5,11 +5,29 @@ import { canisterId, createActor } from "../../declarations/whoami";
 import { Actor, Identity } from "@dfinity/agent";
 
 const init = async () => {
-  const authClient = await AuthClient.create();
+  const authClient = await AuthClient.create({
+    /**
+     * Configure the IdleManager
+     * By default, after 10 minutes, invalidates the identity and logs out
+     **/
+    idleOptions: {
+      // Sets idle timeout to 30 seconds, for illustration
+      idleTimeout: 30_000,
+      // Set to true if you do not want idle functionality
+      disableIdle: false,
+      onIdle: async () => {
+        await logout();
+        renderIndex("You have been logged out due to inactivity");
+      },
+    },
+  });
+
+  const logout = async () => await authClient.logout();
   if (await authClient.isAuthenticated()) {
     handleAuthenticated(authClient);
   }
   renderIndex();
+  setupToast();
 
   const loginButton = document.getElementById(
     "loginButton"
@@ -33,6 +51,16 @@ const init = async () => {
     });
   };
 };
+
+async function setupToast() {
+  const header = document.getElementById("header");
+  const status = document.getElementById("status");
+  const content = document.getElementById("content");
+  const closeButton = status?.querySelector("button");
+  closeButton?.addEventListener("click", () => {
+    status?.classList.add("hidden");
+  });
+}
 
 async function handleAuthenticated(authClient: AuthClient) {
   const identity = (await authClient.getIdentity()) as unknown as Identity;

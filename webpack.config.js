@@ -91,7 +91,8 @@ module.exports = {
       cache: false,
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development",
+      NODE_ENV: process.env.NODE_ENV ?? "development",
+      DFX_NETWORK: process.env.DFX_NETWORK ?? "local",
       LOCAL_II_CANISTER,
       REPLICA_PORT,
       ...canisterEnvVariables,
@@ -106,7 +107,8 @@ module.exports = {
     proxy: {
       "/api": {
         target:
-          dfxJson.networks?.local?.bind ?? `http://127.0.0.1:${REPLICA_PORT}`,
+          `http://${dfxJson.networks?.local?.bind}` ??
+          `http://127.0.0.1:${REPLICA_PORT}`,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
