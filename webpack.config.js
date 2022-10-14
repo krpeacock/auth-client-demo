@@ -2,6 +2,9 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const dfxJson = require("./dfx.json");
+
+const LOCAL_II_CANISTER = "rwlgt-iiaaa-aaaaa-aaaaa-cai";
 
 function initCanisterEnv() {
   let localCanisters, prodCanisters;
@@ -36,6 +39,8 @@ function initCanisterEnv() {
 const canisterEnvVariables = initCanisterEnv();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
+
+const REPLICA_PORT = process.env.REPLICA_PORT ?? "8000";
 
 const frontendDirectory = "auth_client_demo_assets";
 
@@ -87,6 +92,8 @@ module.exports = {
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
+      LOCAL_II_CANISTER,
+      REPLICA_PORT,
       ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({
@@ -98,7 +105,8 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8000",
+        target:
+          dfxJson.networks?.local?.bind ?? `http://127.0.0.1:${REPLICA_PORT}`,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",

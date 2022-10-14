@@ -19,15 +19,15 @@ const init = async () => {
   const hours = BigInt(24);
   const nanoseconds = BigInt(3600000000000);
 
-  loginButton.onclick = async () => {
-    await authClient.login({
+  loginButton.onclick = () => {
+    authClient.login({
       onSuccess: async () => {
         handleAuthenticated(authClient);
       },
       identityProvider:
         process.env.DFX_NETWORK === "ic"
           ? "https://identity.ic0.app/#authorize"
-          : process.env.LOCAL_II_CANISTER,
+          : `http://localhost:${process.env.REPLICA_PORT}?canisterId=${process.env.LOCAL_II_CANISTER}`,
       // Maximum authorization expiration is 8 days
       maxTimeToLive: days * hours * nanoseconds,
     });
