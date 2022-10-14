@@ -14,3 +14,5 @@
 node_modules/
 dist/
 .env
+
+src/declarations
