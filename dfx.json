@@ -17,7 +17,9 @@
       }
     },
     "auth_client_demo_assets": {
-      "dependencies": ["whoami"],
+      "dependencies": [
+        "whoami"
+      ],
       "frontend": {
         "entrypoint": "src/auth_client_demo_assets/src/index.html"
       },

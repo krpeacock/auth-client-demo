@@ -4,9 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const dfxConfig = require("./dfx.json");
 
-let localCanisters, prodCanisters, canisters;
-
-function initCanisterIds() {
+function initCanisterEnv() {
+  let localCanisters, prodCanisters;
   try {
     localCanisters = require(path.resolve(
       ".dfx",
@@ -26,19 +25,21 @@ function initCanisterIds() {
     process.env.DFX_NETWORK ||
     (process.env.NODE_ENV === "production" ? "ic" : "local");
 
-  canisters = network === "local" ? localCanisters : prodCanisters;
+  const canisterConfig = network === "local" ? localCanisters : prodCanisters;
 
-  for (const canister in canisters) {
-    process.env[canister.toUpperCase() + "_CANISTER_ID"] =
-      canisters[canister][network];
-  }
+  return Object.entries(canisterConfig).reduce((prev, current) => {
+    const [canisterName, canisterDetails] = current;
+    prev[canisterName.toUpperCase() + "_CANISTER_ID"] =
+      canisterDetails[network];
+    return prev;
+  }, {});
 }
-initCanisterIds();
+const canisterEnvVariables = initCanisterEnv();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Updated for new default with dfx 0.12.x
-const localReplicaPort =
+const REPLICA_PORT =
   dfxConfig.networks?.local?.bind?.split(":")[1] ??
   process.env.DFX_REPLICA_PORT ??
   "4943";
@@ -75,7 +76,7 @@ module.exports = {
   },
   output: {
     filename: "index.js",
-    path: path.join(__dirname, "dist", "auth_client_demo_assets"),
+    path: path.join(__dirname, "dist", asset_entry),
   },
 
   // Depending in the language or framework you are using for
@@ -86,7 +87,7 @@ module.exports = {
   module: {
     rules: [
       { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-      //  { test: /\.css$/, use: ['style-loader','css-loader'] }
+      { test: /\.css$/, use: ["style-loader", "css-loader"] },
     ],
   },
   plugins: [
@@ -95,10 +96,11 @@ module.exports = {
       cache: false,
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: isDevelopment ? "development" : "production",
-      WHOAMI_CANISTER_ID: canisters["whoami"],
-      LOCAL_II_CANISTER: `http://${canisters["internet_identity"].local}.localhost:${localReplicaPort}/#authorize`,
-      DFX_NETWORK: process.env.DFX_NETWORK || "local",
+      NODE_ENV: process.env.NODE_ENV ?? "development",
+      DFX_NETWORK: process.env.DFX_NETWORK ?? "local",
+      LOCAL_II_CANISTER: `http://${canisterEnvVariables["INTERNET_IDENTITY_CANISTER_ID"]}.localhost:${REPLICA_PORT}/#authorize`,
+      REPLICA_PORT,
+      ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({
       Buffer: [require.resolve("buffer/"), "Buffer"],
@@ -109,15 +111,18 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: `http://localhost:${localReplicaPort}`,
+        target:
+          `http://${dfxConfig.networks?.local?.bind}` ??
+          `http://127.0.0.1:${REPLICA_PORT}`,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
         },
       },
     },
+    static: path.resolve(__dirname, "src", asset_entry, "assets"),
     hot: true,
-    contentBase: path.resolve(__dirname, "./src/auth_client_demo_assets"),
-    watchContentBase: true,
+    watchFiles: [path.resolve(__dirname, "src", asset_entry)],
+    liveReload: true,
   },
 };

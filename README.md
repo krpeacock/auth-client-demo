@@ -23,15 +23,17 @@ To get started, start a local dfx development environment in this directory with
 
 ```bash
 cd auth-client-demo/
-dfx start --background
+dfx start --background --clean
 dfx deploy
 ```
 
-Then, make sure you have the [Internet Identity](https://github.com/dfinity/internet-identity) repo cloned locally. 
+Then, make sure you have the [Internet Identity](https://github.com/dfinity/internet-identity) repo cloned locally, adjacent to this project. 
 
 ```bash
 cd ../internet-identity
-II_ENV=development dfx deploy --no-wallet --argument '(null)'
+rm -rf .dfx/local
+II_FETCH_ROOT_KEY=1 II_DUMMY_CAPTCHA=1  dfx deploy --no-wallet --argument '(null)'
+pushd
 ```
 
 Copy the canister ID fom the Internet Identity canister, and paste it into `webpack.config.js` in this project on the `LOCAL_II_CANISTER` variable on line `8`.
