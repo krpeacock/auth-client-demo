@@ -2,11 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-
-// Replace this value with the ID of your local Internet Identity canister
-const LOCAL_II_CANISTER =
-  "http://rrkah-fqaaa-aaaaa-aaaaq-cai.localhost:8000/#authorize";
+const dfxConfig = require("./dfx.json");
 
 let localCanisters, prodCanisters, canisters;
 
@@ -40,6 +36,13 @@ function initCanisterIds() {
 initCanisterIds();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
+
+// Updated for new default with dfx 0.12.x
+const localReplicaPort =
+  dfxConfig.networks?.local?.bind?.split(":")[1] ??
+  process.env.DFX_REPLICA_PORT ??
+  "4943";
+
 const asset_entry = path.join(
   "src",
   "auth_client_demo_assets",
@@ -91,35 +94,22 @@ module.exports = {
       template: path.join(__dirname, asset_entry),
       cache: false,
     }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.join(
-            __dirname,
-            "src",
-            "auth_client_demo_assets",
-            "assets"
-          ),
-          to: path.join(__dirname, "dist", "auth_client_demo_assets"),
-        },
-      ],
-    }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: isDevelopment ? "development" : "production",
       WHOAMI_CANISTER_ID: canisters["whoami"],
-      LOCAL_II_CANISTER,
-      DFX_NETWORK: process.env.DFX_NETWORK || "local"
+      LOCAL_II_CANISTER: `http://${canisters["internet_identity"].local}.localhost:${localReplicaPort}/#authorize`,
+      DFX_NETWORK: process.env.DFX_NETWORK || "local",
     }),
     new webpack.ProvidePlugin({
       Buffer: [require.resolve("buffer/"), "Buffer"],
       process: require.resolve("process/browser"),
     }),
   ],
-  // proxy /api to port 8000 during development
+  // proxy /api to local replica during development
   devServer: {
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: `http://localhost:${localReplicaPort}`,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
