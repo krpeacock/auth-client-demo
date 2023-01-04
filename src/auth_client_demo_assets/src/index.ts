@@ -11,8 +11,6 @@ const init = async () => {
      * By default, after 10 minutes, invalidates the identity and logs out
      **/
     idleOptions: {
-      // Sets idle timeout to 30 seconds, for illustration
-      idleTimeout: 30_000,
       // Set to true if you do not want idle functionality
       disableIdle: false,
       onIdle: async () => {
