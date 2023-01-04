@@ -27,17 +27,6 @@ dfx start --background --clean
 dfx deploy
 ```
 
-Then, make sure you have the [Internet Identity](https://github.com/dfinity/internet-identity) repo cloned locally, adjacent to this project. 
-
-```bash
-cd ../internet-identity
-rm -rf .dfx/local
-II_FETCH_ROOT_KEY=1 II_DUMMY_CAPTCHA=1  dfx deploy --no-wallet --argument '(null)'
-pushd
-```
-
-Copy the canister ID fom the Internet Identity canister, and paste it into `webpack.config.js` in this project on the `LOCAL_II_CANISTER` variable on line `8`.
-
 Finally, cd back into the auth-client-demo directory and start the development server with `npm start`.
 
 You can now access the app at `http://localhost:8080`.
