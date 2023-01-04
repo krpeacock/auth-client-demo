@@ -27,6 +27,6 @@ dfx start --background --clean
 dfx deploy
 ```
 
-Finally, cd back into the auth-client-demo directory and start the development server with `npm start`.
+Once deployed, start the development server with `npm start`.
 
 You can now access the app at `http://localhost:8080`.

@@ -43,7 +43,7 @@ const init = async () => {
       identityProvider:
         process.env.DFX_NETWORK === "ic"
           ? "https://identity.ic0.app/#authorize"
-          : `http://localhost:${process.env.REPLICA_PORT}?canisterId=${process.env.LOCAL_II_CANISTER}`,
+          : `http://localhost:${process.env.REPLICA_PORT}?canisterId=${process.env.INTERNET_IDENTITY_CANISTER_ID}#authorize`,
       // Maximum authorization expiration is 8 days
       maxTimeToLive: days * hours * nanoseconds,
     });

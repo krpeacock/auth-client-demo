@@ -8,9 +8,9 @@ function initCanisterEnv() {
   let localCanisters, prodCanisters;
   try {
     localCanisters = require(path.resolve(
-      ".dfx",
-      "local",
-      "canister_ids.json"
+        ".dfx",
+        "local",
+        "canister_ids.json"
     ));
   } catch (error) {
     console.log("No local canister_ids.json found. Continuing production");
@@ -22,15 +22,15 @@ function initCanisterEnv() {
   }
 
   const network =
-    process.env.DFX_NETWORK ||
-    (process.env.NODE_ENV === "production" ? "ic" : "local");
+      process.env.DFX_NETWORK ||
+      (process.env.NODE_ENV === "production" ? "ic" : "local");
 
   const canisterConfig = network === "local" ? localCanisters : prodCanisters;
 
   return Object.entries(canisterConfig).reduce((prev, current) => {
     const [canisterName, canisterDetails] = current;
     prev[canisterName.toUpperCase() + "_CANISTER_ID"] =
-      canisterDetails[network];
+        canisterDetails[network];
     return prev;
   }, {});
 }
@@ -38,17 +38,15 @@ const canisterEnvVariables = initCanisterEnv();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-// Updated for new default with dfx 0.12.x
-const REPLICA_PORT =
-  dfxConfig.networks?.local?.bind?.split(":")[1] ??
-  process.env.DFX_REPLICA_PORT ??
-  "4943";
+const REPLICA_PORT = process.env.DFX_REPLICA_PORT ?? "4943";
+
+const frontend_directory = "auth_client_demo_assets";
 
 const asset_entry = path.join(
-  "src",
-  "auth_client_demo_assets",
-  "src",
-  "index.html"
+    "src",
+    frontend_directory,
+    "src",
+    "index.html"
 );
 
 module.exports = {
@@ -76,7 +74,7 @@ module.exports = {
   },
   output: {
     filename: "index.js",
-    path: path.join(__dirname, "dist", asset_entry),
+    path: path.join(__dirname, "dist", frontend_directory),
   },
 
   // Depending in the language or framework you are using for
@@ -98,7 +96,6 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: process.env.NODE_ENV ?? "development",
       DFX_NETWORK: process.env.DFX_NETWORK ?? "local",
-      LOCAL_II_CANISTER: `http://${canisterEnvVariables["INTERNET_IDENTITY_CANISTER_ID"]}.localhost:${REPLICA_PORT}/#authorize`,
       REPLICA_PORT,
       ...canisterEnvVariables,
     }),
@@ -111,18 +108,16 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target:
-          `http://${dfxConfig.networks?.local?.bind}` ??
-          `http://127.0.0.1:${REPLICA_PORT}`,
+        target: `http://127.0.0.1:${REPLICA_PORT}`,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
         },
       },
     },
-    static: path.resolve(__dirname, "src", asset_entry, "assets"),
+    static: path.resolve(__dirname, "src", frontend_directory, "assets"),
     hot: true,
-    watchFiles: [path.resolve(__dirname, "src", asset_entry)],
+    watchFiles: [path.resolve(__dirname, "src", frontend_directory)],
     liveReload: true,
   },
 };
