@@ -38,11 +38,7 @@ const canisterEnvVariables = initCanisterEnv();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-// Updated for new default with dfx 0.12.x
-const REPLICA_PORT =
-    dfxConfig.networks?.local?.bind?.split(":")[1] ??
-    process.env.DFX_REPLICA_PORT ??
-    "4943";
+const REPLICA_PORT = process.env.DFX_REPLICA_PORT ?? "4943";
 
 const frontend_directory = "auth_client_demo_assets";
 
@@ -100,7 +96,6 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: process.env.NODE_ENV ?? "development",
       DFX_NETWORK: process.env.DFX_NETWORK ?? "local",
-      LOCAL_II_CANISTER: `http://${canisterEnvVariables["INTERNET_IDENTITY_CANISTER_ID"]}.localhost:${REPLICA_PORT}/#authorize`,
       REPLICA_PORT,
       ...canisterEnvVariables,
     }),
@@ -113,9 +108,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target:
-            `http://${dfxConfig.networks?.local?.bind}` ??
-            `http://127.0.0.1:${REPLICA_PORT}`,
+        target: `http://127.0.0.1:${REPLICA_PORT}`,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
