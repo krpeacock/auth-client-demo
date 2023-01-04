@@ -2,9 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const dfxJson = require("./dfx.json");
-
-const LOCAL_II_CANISTER = "rwlgt-iiaaa-aaaaa-aaaaa-cai";
+const dfxConfig = require("./dfx.json");
 
 function initCanisterEnv() {
   let localCanisters, prodCanisters;
@@ -40,11 +38,18 @@ const canisterEnvVariables = initCanisterEnv();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-const REPLICA_PORT = process.env.REPLICA_PORT ?? "8000";
+// Updated for new default with dfx 0.12.x
+const REPLICA_PORT =
+  dfxConfig.networks?.local?.bind?.split(":")[1] ??
+  process.env.DFX_REPLICA_PORT ??
+  "4943";
 
-const frontendDirectory = "auth_client_demo_assets";
-
-const frontend_entry = path.join("src", frontendDirectory, "src", "index.html");
+const asset_entry = path.join(
+  "src",
+  "auth_client_demo_assets",
+  "src",
+  "index.html"
+);
 
 module.exports = {
   target: "web",
@@ -52,7 +57,7 @@ module.exports = {
   entry: {
     // The frontend.entrypoint points to the HTML file for this build, so we need
     // to replace the extension to `.js`.
-    index: path.join(__dirname, frontend_entry).replace(/\.html$/, ".ts"),
+    index: path.join(__dirname, asset_entry).replace(/\.html$/, ".ts"),
   },
   devtool: isDevelopment ? "source-map" : false,
   optimization: {
@@ -71,7 +76,7 @@ module.exports = {
   },
   output: {
     filename: "index.js",
-    path: path.join(__dirname, "dist", frontendDirectory),
+    path: path.join(__dirname, "dist", asset_entry),
   },
 
   // Depending in the language or framework you are using for
@@ -87,13 +92,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, frontend_entry),
+      template: path.join(__dirname, asset_entry),
       cache: false,
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: process.env.NODE_ENV ?? "development",
       DFX_NETWORK: process.env.DFX_NETWORK ?? "local",
-      LOCAL_II_CANISTER,
+      LOCAL_II_CANISTER: `http://${canisterEnvVariables["INTERNET_IDENTITY_CANISTER_ID"]}.localhost:${REPLICA_PORT}/#authorize`,
       REPLICA_PORT,
       ...canisterEnvVariables,
     }),
@@ -102,12 +107,12 @@ module.exports = {
       process: require.resolve("process/browser"),
     }),
   ],
-  // proxy /api to port 8000 during development
+  // proxy /api to local replica during development
   devServer: {
     proxy: {
       "/api": {
         target:
-          `http://${dfxJson.networks?.local?.bind}` ??
+          `http://${dfxConfig.networks?.local?.bind}` ??
           `http://127.0.0.1:${REPLICA_PORT}`,
         changeOrigin: true,
         pathRewrite: {
@@ -115,9 +120,9 @@ module.exports = {
         },
       },
     },
-    static: path.resolve(__dirname, "src", frontendDirectory, "assets"),
+    static: path.resolve(__dirname, "src", asset_entry, "assets"),
     hot: true,
-    watchFiles: [path.resolve(__dirname, "src", frontendDirectory)],
+    watchFiles: [path.resolve(__dirname, "src", asset_entry)],
     liveReload: true,
   },
 };
