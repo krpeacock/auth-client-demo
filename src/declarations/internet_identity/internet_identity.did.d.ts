@@ -69,9 +69,12 @@ export interface InternetIdentityInit {
   'archive_module_hash' : [] | [Uint8Array],
   'assigned_user_number_range' : [] | [[bigint, bigint]],
   'canister_creation_cycles_cost' : [] | [bigint],
+  'layout_migration_batch_size' : [] | [number],
 }
 export interface InternetIdentityStats {
+  'storage_layout_version' : number,
   'users_registered' : bigint,
+  'layout_migration_state' : [] | [LayoutMigrationState],
   'assigned_user_number_range' : [bigint, bigint],
   'archive_info' : ArchiveInfo,
   'canister_creation_cycles_cost' : bigint,
@@ -80,6 +83,11 @@ export type KeyType = { 'platform' : null } |
   { 'seed_phrase' : null } |
   { 'cross_platform' : null } |
   { 'unknown' : null };
+export type LayoutMigrationState = {
+    'started' : { 'batch_size' : bigint, 'anchors_left' : bigint }
+  } |
+  { 'finished' : null } |
+  { 'not_started' : null };
 export type PublicKey = Uint8Array;
 export type Purpose = { 'authentication' : null } |
   { 'recovery' : null };
