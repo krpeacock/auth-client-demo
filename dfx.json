@@ -25,7 +25,7 @@
       },
       "source": [
         "src/auth_client_demo_assets/assets",
-        "dist/auth_client_demo_assets/"
+        "dist/src/auth_client_demo_assets/"
       ],
       "type": "assets"
     }
