@@ -12,7 +12,7 @@ const init = async () => {
      **/
     idleOptions: {
       // Set to true if you do not want idle functionality
-      disableIdle: false,
+      disableIdle: true,
       onIdle: async () => {
         await logout();
         renderIndex("You have been logged out due to inactivity");
