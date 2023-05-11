@@ -7,7 +7,7 @@
     "internet_identity": {
       "type": "custom",
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
       "shrink": false,
       "remote": {
         "candid": "internet_identity.did",
@@ -15,17 +15,13 @@
           "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
         }
       }
-    }
-  ,"auth_client_demo_assets": {
+    },
+    "auth_client_demo_assets": {
       "dependencies": [
         "whoami"
       ],
-      "frontend": {
-        "entrypoint": "src/auth_client_demo_assets/src/index.html"
-      },
       "source": [
-        "src/auth_client_demo_assets/assets",
-        "dist/auth_client_demo_assets/"
+        "src/auth_client_demo_assets/vanilla/dist"
       ],
       "type": "assets"
     }
@@ -36,5 +32,6 @@
       "packtool": ""
     }
   },
+  "output_env_file": ".env",
   "version": 2
 }

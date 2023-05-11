@@ -43,7 +43,7 @@ const init = async () => {
       identityProvider:
         process.env.DFX_NETWORK === "ic"
           ? "https://identity.ic0.app/#authorize"
-          : `http://localhost:${process.env.REPLICA_PORT}?canisterId=${process.env.INTERNET_IDENTITY_CANISTER_ID}#authorize`,
+          : `http://localhost:4943?canisterId=${process.env.CANISTER_ID_INTERNET_IDENTITY}#authorize`,
       // Maximum authorization expiration is 8 days
       maxTimeToLive: days * hours * nanoseconds,
     });
@@ -51,9 +51,7 @@ const init = async () => {
 };
 
 async function setupToast() {
-  const header = document.getElementById("header");
   const status = document.getElementById("status");
-  const content = document.getElementById("content");
   const closeButton = status?.querySelector("button");
   closeButton?.addEventListener("click", () => {
     status?.classList.add("hidden");
