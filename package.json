@@ -12,6 +12,8 @@
     "build": "vite build src/auth_client_demo_assets/vanilla --config vite.config.js",
     "prebuild": "npm run generate",
     "start": "vite src/auth_client_demo_assets/vanilla --config vite.config.js",
+    "start:react": "vite src/auth_client_demo_assets/react --config vite.config.react.js",
+    "build:react": "vite build src/auth_client_demo_assets/react --config vite.config.react.js",
     "prestart": "npm run generate",
     "generate": "dfx generate whoami"
   },
@@ -38,6 +40,8 @@
     "@dfinity/candid": "^0.15.6",
     "@dfinity/principal": "^0.15.6",
     "lit-html": "^2.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4"
   }
