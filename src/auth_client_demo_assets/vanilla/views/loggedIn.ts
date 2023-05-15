@@ -29,7 +29,6 @@ export const renderLoggedIn = (
     async () => {
       try {
         const response = await actor.whoami();
-        console.log(response);
         (document.getElementById("whoami") as HTMLInputElement).value =
           response.toString();
       } catch (error) {

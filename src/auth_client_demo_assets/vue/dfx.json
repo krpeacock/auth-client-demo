@@ -1,7 +1,7 @@
 {
   "canisters": {
     "whoami": {
-      "main": "src/whoami/main.mo",
+      "main": "../../whoami/main.mo",
       "type": "motoko"
     },
     "internet_identity": {
@@ -21,7 +21,7 @@
         "whoami"
       ],
       "source": [
-        "src/auth_client_demo_assets/vue/dist"
+        "src/auth_client_demo_assets/vanilla/dist"
       ],
       "type": "assets"
     }

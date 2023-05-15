@@ -8,16 +8,14 @@
 </template>
 
 <script>
-import { useAuthStore } from "../store/index";
+import { useAuthStore } from "../store/auth";
 
 export default {
   name: 'LoggedOut',
-  setup() {
-    const mainStore = useAuthStore();
-    let login = mainStore.login;
-
-    return {
-      login
+  methods: {
+    login() {
+       const authStore = useAuthStore();
+      authStore.login();
     }
   },
   props: {

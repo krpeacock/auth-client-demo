@@ -56,7 +56,6 @@ export const useAuthClient = (options = defaultOptions) => {
   };
 
   async function updateClient(client) {
-    console.log("updateClient");
     const isAuthenticated = await client.isAuthenticated();
     setIsAuthenticated(isAuthenticated);
 
@@ -73,8 +72,6 @@ export const useAuthClient = (options = defaultOptions) => {
         identity,
       },
     });
-
-    console.log(actor);
 
     setWhoamiActor(actor);
   }
