@@ -27,3 +27,4 @@ You can now access the app at `http://localhost:8080`.
 This demo has multiple versions, each of which demonstrates a different feature of the auth-client. `npm start` will run the vanilla JS version, but you can run the others by running `npm run start:version` where `version` is one of the following:
 
 - React
+- Vue
