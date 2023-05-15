@@ -2,6 +2,7 @@
   "name": "auth_client_demo_assets",
   "version": "0.1.0",
   "description": "Internet Computer starter application",
+  "private": "true",
   "keywords": [
     "Internet Computer",
     "Motoko",
@@ -18,6 +19,7 @@
     "generate": "dfx generate whoami"
   },
   "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
     "assert": "2.0.0",
     "buffer": "6.0.3",
     "dotenv": "^16.0.3",
