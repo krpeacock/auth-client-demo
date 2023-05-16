@@ -1,41 +1,23 @@
 <template>
-<main>
-  <div v-if="isReady">
-  <LoggedIn v-if="isAuthenticated" />
-  <LoggedOut v-else />
-  </div>
-</main>
+  <main>
+    <div v-if="isReady">
+      <LoggedIn v-if="isAuthenticated" />
+      <LoggedOut v-else />
+    </div>
+  </main>
 </template>
 
-<script>
-import LoggedOut from './components/LoggedOut.vue'
-import LoggedIn from './components/LoggedIn.vue'
-import { storeToRefs } from 'pinia'
+<script setup>
+import LoggedOut from "./components/LoggedOut.vue";
+import LoggedIn from "./components/LoggedIn.vue";
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "./store/auth";
+import { onMounted } from "vue";
 
-export default {
-  name: 'App',
-  setup() {
-    const authStore = useAuthStore();
-    const { isAuthenticated } = storeToRefs(authStore);
-    const isReady = isAuthenticated !== null;
-    return {
-      isReady,
-      isAuthenticated
-    }
+const authStore = useAuthStore();
+const { isReady, isAuthenticated } = storeToRefs(authStore);
 
-  },
-  mounted() {
-    const authStore = useAuthStore();
-    authStore.init();
-  },
-  components: {
-    LoggedOut,
-    LoggedIn
-  }
-}
+onMounted(() => {
+  authStore.init();
+});
 </script>
-
-<style>
-
-</style>

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { AuthClient } from "@dfinity/auth-client";
 import { createActor, canisterId } from "../../../declarations/whoami";
+import { toRaw } from "vue";
 
 const defaultOptions = {
   /**
@@ -35,6 +36,7 @@ export const useAuthStore = defineStore("auth", {
   id: "auth",
   state: () => {
     return {
+      isReady: false,
       isAuthenticated: null,
       authClient: null,
       identity: null,
@@ -52,20 +54,13 @@ export const useAuthStore = defineStore("auth", {
       this.isAuthenticated = isAuthenticated;
       this.identity = identity;
       this.whoamiActor = whoamiActor;
+      this.isReady = true;
     },
     async login() {
-      /*
-       * Note: for Vue, a proxy of the authClient cannot be used for "login"
-       * because the `postMessage` API is interfered with. We can re-create the client for the login, and then set it after the login is complete.
-       * All other auth-client methods and attributes can use the proxy.
-       */
-      const authClient = await AuthClient.create(defaultOptions.createOptions);
+      const authClient = toRaw(this.authClient);
       authClient.login({
         ...defaultOptions.loginOptions,
         onSuccess: async () => {
-          // Set the authClient after the login is complete
-          this.authClient = authClient;
-
           this.isAuthenticated = await authClient.isAuthenticated();
           this.identity = this.isAuthenticated
             ? authClient.getIdentity()
@@ -77,9 +72,7 @@ export const useAuthStore = defineStore("auth", {
       });
     },
     async logout() {
-      // eslint-disable-next-line no-unused-vars
-      const authClient = (await this.$state).authClient;
-      await authClient.logout();
+      await this.authClient?.logout();
       this.isAuthenticated = false;
       this.identity = null;
       this.whoamiActor = null;
