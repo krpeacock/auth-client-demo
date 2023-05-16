@@ -13,42 +13,24 @@
       placeholder="your Identity"
       :value="response"
     />
-    <button id="logout" @click="logout">log out</button>
+    <button id="logout" @click="async () => await authStore.logout()">
+      log out
+    </button>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { useAuthStore } from "../store/auth";
-import { storeToRefs } from "pinia";
 
-export default {
-  name: "LoggedIn",
-  setup() {
-    const authStore = useAuthStore();
-    const { whoamiActor, logout } = storeToRefs(authStore);
-    return {
-      whoamiActor,
-      logout,
-    };
-  },
-  methods: {
-    whoamiCall() {
-      const authStore = useAuthStore();
-      authStore.whoamiActor.whoami().then((res) => {
-        this.response = res;
-      });
-    },
-    logout() {
-      const authStore = useAuthStore();
-      authStore.logout();
-    },
-  },
-  data() {
-    return {
-      response: "",
-    };
-  },
-};
+const authStore = useAuthStore();
+let response = ref("");
+
+function whoamiCall() {
+  authStore.whoamiActor?.whoami().then((res) => {
+    response.value = res;
+  });
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

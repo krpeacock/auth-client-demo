@@ -1,30 +1,16 @@
 <template>
   <div class="container">
-  <h1>Internet Identity Client</h1>
-  <h2>You are not authenticated</h2>
-  <p>To log in, click this button!</p>
-  <button type="button" id="loginButton" @click="login()">Log in</button>
-</div>
+    <h1>Internet Identity Client</h1>
+    <h2>You are not authenticated</h2>
+    <p>To log in, click this button!</p>
+    <button type="button" id="loginButton" @click="authStore.login()">
+      Log in
+    </button>
+  </div>
 </template>
 
-<script>
+<script setup>
 import { useAuthStore } from "../store/auth";
 
-export default {
-  name: 'LoggedOut',
-  methods: {
-    login() {
-       const authStore = useAuthStore();
-      authStore.login();
-    }
-  },
-  props: {
-    msg: String
-  }
-}
+const authStore = useAuthStore();
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>

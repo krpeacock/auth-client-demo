@@ -72,7 +72,8 @@ export const useAuthStore = defineStore("auth", {
       });
     },
     async logout() {
-      await this.authClient?.logout();
+      const authClient = toRaw(this.authClient);
+      await authClient?.logout();
       this.isAuthenticated = false;
       this.identity = null;
       this.whoamiActor = null;
