@@ -17,6 +17,7 @@
     "build:react": "vite build src/auth_client_demo_assets/react --config vite.config.react.js",
     "start:vue": "vite src/auth_client_demo_assets/vue --config vite.config.vue.js",
     "build:vue": "vite build src/auth_client_demo_assets/vue --config vite.config.vue.js",
+    "start:svelte": "cd src/auth_client_demo_assets/svelte && npm run dev",
     "prestart": "npm run generate",
     "generate": "dfx generate whoami"
   },
