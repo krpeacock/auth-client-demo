@@ -5,7 +5,6 @@
   import { onMount } from "svelte";
 
   onMount(() => {
-    window.global = window;
     $auth.init();
   });
 </script>
