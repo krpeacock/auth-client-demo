@@ -2,7 +2,10 @@
   "canisters": {
     "whoami": {
       "main": "src/whoami/main.mo",
-      "type": "motoko"
+      "type": "motoko",
+      "declarations": {
+        "node_compatibility": true
+      }
     },
     "internet_identity": {
       "type": "custom",
