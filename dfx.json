@@ -24,7 +24,7 @@
         "whoami"
       ],
       "source": [
-        "src/auth_client_demo_assets/vue/dist"
+        "src/auth_client_demo_assets/vanilla/dist"
       ],
       "type": "assets"
     }
