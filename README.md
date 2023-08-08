@@ -28,3 +28,5 @@ This demo has multiple versions, each of which demonstrates a different feature 
 
 - React
 - Vue
+- Vanilla
+- Svelte
