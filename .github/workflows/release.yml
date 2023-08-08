@@ -17,8 +17,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-      - name: "Install"
+      - name: "Install Packages"
         run: npm install  
+
+      - name: "Install DFX"
+        run: echo y | sh -ci "$(curl -fsSL https://sdk.dfinity.org/install.sh)"
+
       - name: "Release"
         run: npm run release
 
