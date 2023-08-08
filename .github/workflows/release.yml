@@ -13,8 +13,7 @@ jobs:
 
     steps:
       - name: "Make Release"
-        run: |
-          ./release.sh
+        run: ${PWD}/release.sh
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
