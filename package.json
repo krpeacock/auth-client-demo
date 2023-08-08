@@ -21,6 +21,7 @@
     "prestart:svelte": "cp .env src/auth_client_demo_assets/svelte/.env",
     "start:svelte": "cd src/auth_client_demo_assets/svelte && npm run dev",
     "prestart": "npm run generate",
+    "release": "node release.mjs",
     "generate": "dfx generate whoami"
   },
   "devDependencies": {
@@ -34,7 +35,8 @@
     "stream-browserify": "3.0.0",
     "util": "0.12.4",
     "vite": "^4.3.6",
-    "vite-plugin-environment": "^1.1.3"
+    "vite-plugin-environment": "^1.1.3",
+    "zx": "^7.2.3"
   },
   "browserslist": [
     "last 2 chrome version",
