@@ -15,12 +15,13 @@ To get started, start a local dfx development environment in this directory with
 ```bash
 cd auth-client-demo/
 dfx start --background --clean
+dfx deps deploy
 dfx deploy
 ```
 
 Once deployed, start the development server with `npm start`.
 
-You can now access the app at `http://localhost:8080`.
+You can now access the app at `http://127.0.0.1:5173/`.
 
 ## Multiple Versions
 
