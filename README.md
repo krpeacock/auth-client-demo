@@ -30,3 +30,26 @@ This demo has multiple versions, each of which demonstrates a different feature 
 - Vue
 - Vanilla
 - Svelte
+
+## Pulling Internet Identity into your own project
+
+To pull Internet Identity into your own project, you'll need to do the following:
+
+1. Add Internet Identity to your `dfx.json` file:
+
+```json
+"internet-identity" : {
+    "type": "pull",
+    "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+}
+```
+
+2. Run the following commands to install the dependencies:
+
+```bash
+dfx deps pull
+dfx deps init --argument '(null)' internet-identity
+dfx deps deploy
+```
+
+

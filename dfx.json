@@ -13,21 +13,14 @@
         "init_guide": "null"
       }
     },
-    "internet_identity": {
-      "type": "custom",
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
-      "shrink": false,
-      "remote": {
-        "candid": "internet_identity.did",
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      }
+    "internet-identity": {
+      "type": "pull",
+      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
     },
     "auth_client_demo_assets": {
       "dependencies": [
-        "whoami"
+        "whoami",
+        "internet-identity"
       ],
       "source": [
         "src/auth_client_demo_assets/vanilla/dist"
