@@ -39,6 +39,6 @@ export const renderLoggedIn = (
   (document.getElementById("logout") as HTMLButtonElement).onclick =
     async () => {
       await authClient.logout();
-      renderIndex();
+      renderIndex(authClient);
     };
 };

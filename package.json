@@ -45,10 +45,10 @@
     "last 2 edge version"
   ],
   "dependencies": {
-    "@dfinity/agent": "^0.15.6",
-    "@dfinity/auth-client": "^0.15.6",
-    "@dfinity/candid": "^0.15.6",
-    "@dfinity/principal": "^0.15.6",
+    "@dfinity/agent": "^0.19.3",
+    "@dfinity/auth-client": "^0.19.3",
+    "@dfinity/candid": "^0.19.3",
+    "@dfinity/principal": "^0.19.3",
     "lit-html": "^2.4.0",
     "pinia": "^2.0.36",
     "react": "^18.2.0",

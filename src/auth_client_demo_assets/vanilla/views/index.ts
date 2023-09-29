@@ -12,8 +12,12 @@ const content = html`<div class="container">
   <button type="button" id="loginButton">Log in</button>
 </div>`;
 
-export const renderIndex = async (statusMessage?: string) => {
-  const authClient = await AuthClient.create(defaultOptions.createOptions);
+export const renderIndex = async (
+  client?: AuthClient,
+  statusMessage?: string
+) => {
+  const authClient =
+    client ?? (await AuthClient.create(defaultOptions.createOptions));
   const pageContent = document.getElementById("pageContent");
   if (pageContent) {
     render(content, pageContent);
@@ -52,7 +56,7 @@ export async function handleAuthenticated(authClient: AuthClient) {
   // Invalidate identity then render login when user goes idle
   authClient.idleManager?.registerCallback(() => {
     Actor.agentOf(whoami_actor)?.invalidateIdentity?.();
-    renderIndex();
+    renderIndex(authClient);
   });
 
   renderLoggedIn(whoami_actor, authClient);
