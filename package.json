@@ -10,7 +10,8 @@
     "Canister"
   ],
   "scripts": {
-    "build": "vite build src/auth_client_demo_assets/vanilla --config vite.config.js",
+    "build": "npm run build:svelte",
+    "build:vanilla": "vite build src/auth_client_demo_assets/vanilla --config vite.config.js",
     "prebuild": "npm run generate",
     "start": "vite src/auth_client_demo_assets/vanilla --config vite.config.js",
     "start:dfx": "dfx start --background --clean --host \"127.0.0.1:4943\"",
@@ -20,6 +21,7 @@
     "build:vue": "vite build src/auth_client_demo_assets/vue --config vite.config.vue.js",
     "prestart:svelte": "cp .env src/auth_client_demo_assets/svelte/.env",
     "start:svelte": "cd src/auth_client_demo_assets/svelte && npm run dev",
+    "build:svelte": "cd src/auth_client_demo_assets/svelte && npm run build",
     "prestart": "npm run generate",
     "release": "node release.mjs",
     "generate": "dfx generate whoami"
