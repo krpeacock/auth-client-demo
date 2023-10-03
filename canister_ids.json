@@ -2,6 +2,9 @@
   "auth_client_demo_assets": {
     "ic": "vasb2-4yaaa-aaaab-qadoa-cai"
   },
+  "svelte": {
+    "ic": "rxrf5-eiaaa-aaaab-qaihq-cai"
+  },
   "whoami": {
     "ic": "ivcos-eqaaa-aaaab-qablq-cai",
     "ic-old": "hihv6-xiaaa-aaaab-qaapa-cai"
