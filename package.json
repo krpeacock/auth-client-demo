@@ -10,7 +10,7 @@
     "Canister"
   ],
   "scripts": {
-    "build": "npm run build:svelte",
+    "build": "npm run build:react",
     "build:vanilla": "vite build src/auth_client_demo_assets/vanilla --config vite.config.js",
     "prebuild": "npm run generate",
     "start": "vite src/auth_client_demo_assets/vanilla --config vite.config.js",
@@ -47,10 +47,11 @@
     "last 2 edge version"
   ],
   "dependencies": {
-    "@dfinity/agent": "^0.19.3",
-    "@dfinity/auth-client": "^0.19.3",
-    "@dfinity/candid": "^0.19.3",
-    "@dfinity/principal": "^0.19.3",
+    "@dfinity/agent": "^0.20.2",
+    "@dfinity/auth-client": "^0.20.2",
+    "@dfinity/candid": "^0.20.2",
+    "@dfinity/identity": "^0.20.2",
+    "@dfinity/principal": "^0.20.2",
     "lit-html": "^2.4.0",
     "pinia": "^2.0.36",
     "react": "^18.2.0",
