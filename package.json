@@ -10,7 +10,7 @@
     "Canister"
   ],
   "scripts": {
-    "build": "npm run build:react",
+    "build": "npm run build:vanilla",
     "build:vanilla": "vite build src/auth_client_demo_assets/vanilla --config vite.config.js",
     "prebuild": "npm run generate",
     "start": "vite src/auth_client_demo_assets/vanilla --config vite.config.js",
