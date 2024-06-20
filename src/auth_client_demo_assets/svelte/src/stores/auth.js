@@ -2,7 +2,23 @@ import { AuthClient } from "@dfinity/auth-client";
 import { readable } from "svelte/store";
 import { createActor, canisterId } from "../../../../declarations/whoami";
 
-const defaultOptions = {
+export const getIdentityProvider = () => {
+  let idpProvider;
+  // Safeguard against server rendering
+  if (typeof window !== "undefined") {
+    const isLocal = process.env.DFX_NETWORK !== "ic";
+    // Safari does not support localhost subdomains
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isLocal && isSafari) {
+      idpProvider = `http://localhost:4943/?canisterId=${process.env.CANISTER_ID_INTERNET_IDENTITY}`;
+    } else if (isLocal) {
+      idpProvider = `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:4943`;
+    }
+  }
+  return idpProvider;
+};
+
+export const defaultOptions = {
   /**
    *  @type {import("@dfinity/auth-client").AuthClientCreateOptions}
    */
@@ -16,24 +32,8 @@ const defaultOptions = {
    * @type {import("@dfinity/auth-client").AuthClientLoginOptions}
    */
   loginOptions: {
-    identityProvider: undefined,
+    identityProvider: getIdentityProvider(),
   },
-};
-
-const getIdentityProvider = () => {
-  let idpProvider = defaultOptions.loginOptions.identityProvider;
-  // Safeguard against server rendering
-  if (typeof window !== "undefined") {
-    const isLocal = process.env.DFX_NETWORK !== "ic";
-    // Safari does not support localhost subdomains
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (isLocal && isSafari) {
-      idpProvider = `http://localhost:4943/?canisterId=${process.env.CANISTER_ID_INTERNET_IDENTITY}`;
-    } else if (isLocal) {
-      idpProvider = `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:4943`;
-    }
-  }
-  return idpProvider;
 };
 
 /**

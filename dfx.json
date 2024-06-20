@@ -28,12 +28,6 @@
       "type": "assets"
     }
   },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
-    }
-  },
   "output_env_file": ".env",
-  "version": 2
+  "version": 3
 }

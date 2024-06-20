@@ -4,8 +4,8 @@ import { canisterId, createActor } from "../../declarations/whoami";
 
 const AuthContext = createContext();
 
-const getIdentityProvider = () => {
-  let idpProvider = defaultOptions.loginOptions.identityProvider;
+export const getIdentityProvider = () => {
+  let idpProvider;
   // Safeguard against server rendering
   if (typeof window !== "undefined") {
     const isLocal = process.env.DFX_NETWORK !== "ic";
@@ -20,9 +20,7 @@ const getIdentityProvider = () => {
   return idpProvider;
 };
 
-console.log("IDP Provider: ", idpProvider);
-
-const defaultOptions = {
+export const defaultOptions = {
   /**
    *  @type {import("@dfinity/auth-client").AuthClientCreateOptions}
    */
