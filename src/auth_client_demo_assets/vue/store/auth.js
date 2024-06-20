@@ -24,6 +24,22 @@ const defaultOptions = {
   },
 };
 
+const getIdentityProvider = () => {
+  let idpProvider = defaultOptions.loginOptions.identityProvider;
+  // Safeguard against server rendering
+  if (typeof window !== "undefined") {
+    const isLocal = process.env.DFX_NETWORK !== "ic";
+    // Safari does not support localhost subdomains
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isLocal && isSafari) {
+      idpProvider = `http://localhost:4943/?canisterId=${process.env.CANISTER_ID_INTERNET_IDENTITY}`;
+    } else if (isLocal) {
+      idpProvider = `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:4943`;
+    }
+  }
+  return idpProvider;
+};
+
 function actorFromIdentity(identity) {
   return createActor(canisterId, {
     agentOptions: {
@@ -60,6 +76,7 @@ export const useAuthStore = defineStore("auth", {
       const authClient = toRaw(this.authClient);
       authClient.login({
         ...defaultOptions.loginOptions,
+        identityProvider: getIdentityProvider(),
         onSuccess: async () => {
           this.isAuthenticated = await authClient.isAuthenticated();
           this.identity = this.isAuthenticated

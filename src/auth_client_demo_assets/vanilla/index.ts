@@ -23,6 +23,22 @@ export const defaultOptions = {
   },
 };
 
+export const getIdentityProvider = () => {
+  let idpProvider = defaultOptions.loginOptions.identityProvider;
+  // Safeguard against server rendering
+  if (typeof window !== "undefined") {
+    const isLocal = process.env.DFX_NETWORK !== "ic";
+    // Safari does not support localhost subdomains
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isLocal && isSafari) {
+      idpProvider = `http://localhost:4943/?canisterId=${process.env.CANISTER_ID_INTERNET_IDENTITY}`;
+    } else if (isLocal) {
+      idpProvider = `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:4943`;
+    }
+  }
+  return idpProvider;
+};
+
 const init = async () => {
   const authClient = await AuthClient.create(defaultOptions.createOptions);
 
@@ -40,7 +56,5 @@ async function setupToast() {
     status?.classList.add("hidden");
   });
 }
-
-
 
 init();
