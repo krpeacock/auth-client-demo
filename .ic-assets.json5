@@ -1,0 +1,26 @@
+[
+  {
+    "match": "**/*",
+    "security_policy": "standard"
+  },
+  {
+    "match": "dist/svelte/**/*",
+    "serve": "/svelte/$1",
+    "ignore": false
+  },
+  {
+    "match": "dist/react/**/*",
+    "serve": "/react/$1",
+    "ignore": false
+  },
+  {
+    "match": "dist/vanilla/**/*",
+    "serve": "/vanilla/$1",
+    "ignore": false
+  },
+  {
+    "match": "dist/vue/**/*",
+    "serve": "/vue/$1",
+    "ignore": false
+  }
+] 

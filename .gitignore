@@ -13,6 +13,7 @@
 # frontend code
 node_modules/
 dist/
+!src/auth_client_demo_assets/dist/index.html
 .env
 
 src/declarations

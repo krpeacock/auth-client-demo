@@ -1,4 +1,8 @@
 import adapter from "@sveltejs/adapter-static";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -9,9 +13,14 @@ const config = {
     adapter: adapter({
       fallback: "index.html", // may differ from host to host
       precompress: false,
+      pages: path.resolve(__dirname, "..", "dist", "svelte"),
+      assets: path.resolve(__dirname, "..", "dist", "svelte"),
     }),
     serviceWorker: {
       register: false,
+    },
+    paths: {
+      base: "/svelte",
     },
   },
 };

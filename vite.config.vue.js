@@ -7,13 +7,14 @@ dotenv.config();
 
 export default defineConfig({
   root: path.resolve(__dirname, "src", "auth_client_demo_assets", "vue"),
+  base: "/vue/",
   build: {
     outDir: path.resolve(
       __dirname,
       "src",
       "auth_client_demo_assets",
-      "vue",
-      "dist"
+      "dist",
+      "vue"
     ),
     emptyOutDir: true,
   },

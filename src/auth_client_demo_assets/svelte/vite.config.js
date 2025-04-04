@@ -1,10 +1,25 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import EnvironmentPlugin from "vite-plugin-environment";
+import path from "path";
+import environment from "vite-plugin-environment";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config();
 
 export default defineConfig({
+  plugins: [
+    sveltekit(),
+    environment("all", { prefix: "CANISTER_" }),
+    environment("all", { prefix: "DFX_" }),
+    environment({ BACKEND_CANISTER_ID: "" }),
+  ],
+  base: "/svelte/",
+  build: {
+    outDir: path.resolve(__dirname, "..", "dist", "svelte"),
+    emptyOutDir: true,
+  },
   server: {
     proxy: {
       "/api": {
@@ -13,18 +28,7 @@ export default defineConfig({
       },
     },
   },
-  optimizeDeps: {
-    esbuildOptions: {
-      // Node.js global to browser globalThis
-      define: {
-        global: "globalThis",
-      },
-    },
+  define: {
+    "process.env": process.env,
   },
-  plugins: [
-    EnvironmentPlugin("all", { prefix: "CANISTER_" }),
-    EnvironmentPlugin("all", { prefix: "DFX_" }),
-    EnvironmentPlugin({ BACKEND_CANISTER_ID: "" }),
-    sveltekit(),
-  ],
 });

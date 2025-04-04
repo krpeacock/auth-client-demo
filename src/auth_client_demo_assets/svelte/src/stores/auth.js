@@ -6,13 +6,17 @@ export const getIdentityProvider = () => {
   let idpProvider;
   // Safeguard against server rendering
   if (typeof window !== "undefined") {
-    const isLocal = process.env.DFX_NETWORK !== "ic";
+    const isLocal = import.meta.env.VITE_DFX_NETWORK !== "ic";
     // Safari does not support localhost subdomains
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     if (isLocal && isSafari) {
-      idpProvider = `http://localhost:4943/?canisterId=${process.env.CANISTER_ID_INTERNET_IDENTITY}`;
+      idpProvider = `http://localhost:4943/?canisterId=${
+        import.meta.env.VITE_CANISTER_ID_INTERNET_IDENTITY
+      }`;
     } else if (isLocal) {
-      idpProvider = `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:4943`;
+      idpProvider = `http://${
+        import.meta.env.VITE_CANISTER_ID_INTERNET_IDENTITY
+      }.localhost:4943`;
     }
   }
   return idpProvider;
@@ -45,7 +49,7 @@ function actorFromIdentity(identity) {
   return createActor(canisterId, {
     agentOptions: {
       host:
-        process.env.DFX_NETWORK === "ic"
+        import.meta.env.VITE_DFX_NETWORK === "ic"
           ? "https://icp-api.io"
           : "http://localhost:4943",
       identity,

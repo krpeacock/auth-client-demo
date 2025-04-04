@@ -6,13 +6,14 @@ dotenv.config();
 
 export default defineConfig({
   root: path.resolve(__dirname, "src", "auth_client_demo_assets", "react"),
+  base: "/react/",
   build: {
     outDir: path.resolve(
       __dirname,
       "src",
       "auth_client_demo_assets",
-      "react",
-      "dist"
+      "dist",
+      "react"
     ),
     emptyOutDir: true,
   },
