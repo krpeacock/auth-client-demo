@@ -52,11 +52,15 @@ export const useAuthClient = (options = defaultOptions) => {
   const [principal, setPrincipal] = useState(null);
   const [whoamiActor, setWhoamiActor] = useState(null);
 
-  useEffect(() => {
+  const initAuthClient = () => {
     // Initialize AuthClient
     AuthClient.create(options.createOptions).then(async (client) => {
       updateClient(client);
     });
+  }
+
+  useEffect(() => {
+    initAuthClient();
   }, []);
 
   const login = () => {
@@ -91,7 +95,7 @@ export const useAuthClient = (options = defaultOptions) => {
 
   async function logout() {
     await authClient?.logout();
-    await updateClient(authClient);
+    initAuthClient();
   }
 
   return {
