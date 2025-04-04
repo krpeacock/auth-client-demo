@@ -3,7 +3,7 @@ import { Actor, HttpAgent } from "@dfinity/agent";
 import { getIdentityProvider } from "../config";
 import { createActor } from "../../../declarations/whoami";
 
-class AuthenticatedView extends HTMLElement {
+class LoggedIn extends HTMLElement {
   private authClient: AuthClient | null = null;
   private whoamiActor: any = null;
 
@@ -90,4 +90,4 @@ class AuthenticatedView extends HTMLElement {
   }
 }
 
-customElements.define("authenticated-view", AuthenticatedView);
+customElements.define("logged-in", LoggedIn);

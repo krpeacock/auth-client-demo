@@ -1,7 +1,7 @@
 import { AuthClient } from "@dfinity/auth-client";
 import { getIdentityProvider, defaultOptions } from "../config";
 
-class LoginForm extends HTMLElement {
+class LoggedOut extends HTMLElement {
   constructor() {
     super();
   }
@@ -41,4 +41,4 @@ class LoginForm extends HTMLElement {
   }
 }
 
-customElements.define("login-form", LoginForm);
+customElements.define("logged-out", LoggedOut);

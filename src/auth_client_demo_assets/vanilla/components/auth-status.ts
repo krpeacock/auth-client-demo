@@ -1,5 +1,3 @@
-
-
 export class AuthStatus extends HTMLElement {
   private content: HTMLElement;
   private closeButton: HTMLButtonElement;
