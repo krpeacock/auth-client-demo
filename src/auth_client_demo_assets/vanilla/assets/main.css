@@ -31,6 +31,15 @@ body {
   width: 100vw;
 }
 
+auth-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
 p {
   line-height: 22px;
   color: var(--grey-700);

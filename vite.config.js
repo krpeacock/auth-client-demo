@@ -16,6 +16,17 @@ export default defineConfig({
       "vanilla"
     ),
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: path.resolve(
+          __dirname,
+          "src",
+          "auth_client_demo_assets",
+          "vanilla",
+          "index.html"
+        ),
+      },
+    },
   },
   define: {
     global: "window",
@@ -33,4 +44,12 @@ export default defineConfig({
     EnvironmentPlugin("all", { prefix: "DFX_" }),
     EnvironmentPlugin({ BACKEND_CANISTER_ID: "" }),
   ],
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "es2018",
+    },
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
 });
